@@ -32,7 +32,11 @@
 <br/>
 
 - 프론트와의 협업을 위한 도커 이미지 제공
-  - 추후에 세팅 진행하겠습니다.
+  1. `cd back-worker`
+  2. `.\gradlew.bat build` (윈도우) / `./gradlew build` (맥북 M1 / 리눅스)
+  3. `docker build . -t back-worker` / `docker build . -t back-worker --platform linux/arm64` (맥북 M1 의 경우)
+  4. `docker run -p 8080:8080 -v ${pwd}:/workspace back-worker`
+  5. `http://localhost:8080/` 링크를 바탕으로 테스트용 백엔드 서버를 활용하면 됨.
 
 - Git 형상관리 전략
   - 현재 개발 단계에서 `develop` 브랜치에 대한 필요성이 비교적 없어 보임
