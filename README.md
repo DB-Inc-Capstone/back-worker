@@ -47,6 +47,12 @@
       | 이메일 | email | VARHCHAR(30) | NOT NULL | 정규식 검증 진행 |
       | 계정 상태 | acc_status | BOOLEAN | NOT NULL | 기본값 TRUE, TRUE:활성화 / FALSE:비활성화 |
 
+  - 클래스 다이어그램
+    - `WorkerApplication.java` : Java Spring Main Program
+    - `api/WorkerApiService.java` : `CRUD` 를 바탕으로 `serviceImpl` 코드가 작동하도록 함수 제공
+    - `controller/WorkerController.java` : API Interface (위 API 명세서와 같음)
+    - `serviceImpl/WorkerApiServiceImpl.java` : API Interface Implementation 진행
+  
 <br/>
 
 - 프론트와의 협업을 위한 도커 이미지 제공
