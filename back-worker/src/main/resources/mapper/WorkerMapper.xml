@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.dbinc.mapper.WorkerMapper">
+	<select id="selectWorkerList" resultType="WorkerVO">
+		SELECT worker_pk,
+		       id,
+		       name,
+		       phone_number,
+		       email,
+		       acc_status
+		FROM worker;
+	</select>
+	
+	<select id="selectWorkerByName" resultType="WorkerVO">
+		SELECT worker_pk,
+		       id,
+		       name,
+		       phone_number,
+		       email,
+		       acc_status
+		FROM worker
+		WHERE name = #{name};
+	</select>
+	
+	<select id="selectWorkerById" resultType="WorkerVO">
+		SELECT worker_pk,
+		       id,
+		       pw,
+		       name,
+		       phone_number,
+		       email,
+		       acc_status
+		FROM worker
+		WHERE id = #{id};
+	</select>
+	
+	<insert id="insertWorker" parameterType="WorkerVO">
+		INSERT INTO worker(id, pw, name, phone_number, email, acc_status)
+		values (#{id}, #{pw}, #{name}, #{phone_number}, #{email}, #{acc_status});
+	</insert>
+
+	<update id="updateWorker" parameterType="WorkerVO">
+		UPDATE worker
+		SET name = #{name},
+		    phone_number = #{phone_number},
+		    email = #{email},
+		    acc_status = #{acc_status}
+		WHERE id = #{id};
+	</update>
+	
+	<delete id="deleteWorkerById">
+		DELETE
+		FROM worker
+		WHERE id = #{id}
+	</delete>
+
+</mapper>
