@@ -1,4 +1,4 @@
-package kr.co.dbinc.back;
+package kr.co.dbinc;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
