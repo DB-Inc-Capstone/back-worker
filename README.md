@@ -10,8 +10,9 @@
   - `Eclipse IDE` - eGovFrameDev-4.1.0-Win-64bit
   - `JDK 8`
   - `Spring 2.7.16`
-  - `PostgreSQL`
-  - `Mybatis`
+  - `PostgreSQL 14.5`
+    - psql 실행 → `CREATE DATABASE back_worker;` 진행
+  - `Mybatis 3.5.5`
 
 <br/>
 
