@@ -10,8 +10,9 @@
   - `Eclipse IDE` - eGovFrameDev-4.1.0-Win-64bit
   - `JDK 8`
   - `Spring 2.7.16`
-  - `PostgreSQL`
-  - `Mybatis`
+  - `PostgreSQL 14.5`
+    - psql 실행 → `CREATE DATABASE back_worker;` 진행
+  - `Mybatis 3.5.5`
 
 <br/>
 
@@ -25,9 +26,9 @@
       | 로그아웃 | `POST` | /worker/logout/ |
       | 작업자 가입 | `POST` | /worker/ |
       | 작업자 탈퇴 | `DELETE` | /worker/ |
-      | 작업자 정보조회 | `GET` | /worker/:workerId |
-      | 작업자 세부정보조회 | `GET` | /worker/:workerId/detailed |
-      | 작업자 검색 | `GET` | /worker?col={id/name}&sort={asc/desc} |
+      | 작업자 정보조회 | `GET` | /worker/{workerId} |
+      | 작업자 세부정보조회 | `GET` | /worker/{workerId}/detailed |
+      | 작업자 검색 | `GET` | /worker/{keyword}?col={id/name}&sort={asc/desc} |
       | 작업자 개인정보 재설정 | `PUT` | /worker/:workerId |
       | 작업자 아이디 찾기 | `POST` | /worker/findid/ |
       | 작업자 비밀번호 찾기 | `POST` | /worker/:workerId/findpw/ |
