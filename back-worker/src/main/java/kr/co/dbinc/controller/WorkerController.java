@@ -1,22 +1,24 @@
 package kr.co.dbinc.controller;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.boot.jackson.JsonObjectSerializer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.dbinc.api.WorkerService;
 import kr.co.dbinc.model.ResponseDTO;
-import kr.co.dbinc.model.ResponseJson;
 import kr.co.dbinc.model.WorkerVO;
 
 @RequestMapping("/worker")
@@ -67,7 +69,57 @@ public class WorkerController {
 			return new ResponseEntity<>(responseDTO, HttpStatus.OK);			
 		}
 	}
+	
+	/**
+	 * @param keyword
+	 * @param col
+	 * @param sort
+	 * @return 검색 결과 반환
+	 */
+	@GetMapping("/{keyword}")
+	public ResponseEntity<ResponseDTO> searchWorker(@Valid @PathVariable String keyword, 
+													@Valid @RequestParam(value="col") String col, 
+													@Valid @RequestParam(value="sort") String sort) {
+		ResponseDTO responseDTO = new ResponseDTO();
+		List<WorkerVO> workerList = new ArrayList<WorkerVO>();
+		
+		if(col.equals("id")) {
+			WorkerVO worker = workerService.selectWorkerById(keyword);
+			if(worker != null) 
+				workerList.add(worker);
+		} else if(col.equals("name")) {
+			List<WorkerVO> workerList_ = workerService.selectWorkerByName(keyword);
+			workerList.addAll(workerList_);
+		} else {
+			responseDTO.success = false;
+			responseDTO.message = "검색 옵션(col)이 유효하지 않습니다.";
+			return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
+		}
+		
+		if(sort.equals("desc")) {
+			Collections.sort(workerList, new Comparator<WorkerVO>() {
+				@Override
+				public int compare(WorkerVO worker1, WorkerVO worker2) {
+					return worker2.getName().compareTo(worker1.getName());
+				}
+			});
+		} else {
+			Collections.sort(workerList, new Comparator<WorkerVO>() {
+				@Override
+				public int compare(WorkerVO worker1, WorkerVO worker2) {
+					return worker1.getName().compareTo(worker2.getName());
+				}
+			});
+		}
 
+		responseDTO.success = true;
+		responseDTO.message = "성공적으로 불러왔습니다.";
+		responseDTO.workerList = workerList;
+		return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+	}
+
+	
+	
 	/**
 	 * @return List<WorkerVO>
 	 */
