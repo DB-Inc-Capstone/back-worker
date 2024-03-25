@@ -6,12 +6,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseDTO {
-	public boolean success;
 	public String message;
-	public List<WorkerVO> workerList;
+	public List<WorkerDTO> workerList;
 }

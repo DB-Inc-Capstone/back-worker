@@ -3,56 +3,52 @@
 
 <mapper namespace="kr.co.dbinc.mapper.WorkerMapper">
 	<select id="selectWorkerList" resultType="WorkerVO">
-		SELECT worker_pk,
-		       id,
-		       name,
-		       phone_number,
-		       email,
-		       acc_status
+		SELECT id,
+		       username,
+		       nickname,
+		       phoneNumber,
+		       email
 		FROM worker;
 	</select>
 	
-	<select id="selectWorkerByName" resultType="WorkerVO">
-		SELECT worker_pk,
-		       id,
-		       name,
+	<select id="selectWorkerByNickname" resultType="WorkerVO">
+		SELECT id,
+		       username,
+		       nickname,
 		       phone_number,
-		       email,
-		       acc_status
+		       email
 		FROM worker
-		WHERE name = #{name};
+		WHERE nickname = #{nickname};
 	</select>
 	
-	<select id="selectWorkerById" resultType="WorkerVO">
-		SELECT worker_pk,
-		       id,
-		       pw,
-		       name,
+	<select id="selectWorkerByUsername" resultType="WorkerVO">
+		SELECT id,
+		       username,
+		       password,
+		       nickname,
 		       phone_number,
-		       email,
-		       acc_status
+		       email
 		FROM worker
-		WHERE id = #{id};
+		WHERE username = #{username};
 	</select>
 	
 	<insert id="insertWorker" parameterType="WorkerVO">
-		INSERT INTO worker(id, pw, name, phone_number, email, acc_status)
-		values (#{id}, #{pw}, #{name}, #{phone_number}, #{email}, #{acc_status});
+		INSERT INTO worker(username, password, nickname, phone_number, email)
+		values (#{username}, #{password}, #{nickname}, #{phoneNumber}, #{email});
 	</insert>
 
 	<update id="updateWorker" parameterType="WorkerVO">
 		UPDATE worker
-		SET name = #{name},
-		    phone_number = #{phone_number},
+		SET nickname = #{nickname},
+		    phone_number = #{phoneNumber},
 		    email = #{email},
-		    acc_status = #{acc_status}
-		WHERE id = #{id};
+		WHERE username = #{username};
 	</update>
 	
-	<delete id="deleteWorkerById">
+	<delete id="deleteWorkerByUsername">
 		DELETE
 		FROM worker
-		WHERE id = #{id}
+		WHERE username = #{username}
 	</delete>
 
 </mapper>

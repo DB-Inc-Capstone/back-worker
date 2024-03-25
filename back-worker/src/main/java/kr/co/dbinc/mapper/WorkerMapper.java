@@ -8,13 +8,13 @@ import kr.co.dbinc.model.WorkerVO;
 public interface WorkerMapper {
 	List<WorkerVO> selectWorkerList();
 	
-	List<WorkerVO> selectWorkerByName(String name);
+	List<WorkerVO> selectWorkerByNickname(String nickname);
 	
-	WorkerVO selectWorkerById(String id);
+	WorkerVO selectWorkerByUsername(String username);
 	
 	int insertWorker(WorkerVO workerVO);
 	
 	int updateWorker(WorkerVO workerVO);
 	
-	int deleteWorkerById(String id);
+	int deleteWorkerByUsername(String username);
 }

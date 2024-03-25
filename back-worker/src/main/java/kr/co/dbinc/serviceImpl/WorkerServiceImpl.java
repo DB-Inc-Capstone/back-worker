@@ -28,16 +28,16 @@ public class WorkerServiceImpl implements WorkerService {
 
 	@Transactional(readOnly = true)
 	@Override
-	public List<WorkerVO> selectWorkerByName(String name) {
+	public List<WorkerVO> selectWorkerByNickname(String nickname) {
 		WorkerMapper wm = this.sqlSession.getMapper(WorkerMapper.class);
-		return wm.selectWorkerByName(name);
+		return wm.selectWorkerByNickname(nickname);
 	}
 
 	@Transactional(readOnly = true)
 	@Override
-	public WorkerVO selectWorkerById(String id) {
+	public WorkerVO selectWorkerByUsername(String username) {
 		WorkerMapper wm = this.sqlSession.getMapper(WorkerMapper.class);
-		return wm.selectWorkerById(id);
+		return wm.selectWorkerByUsername(username);
 	}
 
 	@Transactional
@@ -56,9 +56,9 @@ public class WorkerServiceImpl implements WorkerService {
 
 	@Transactional
 	@Override
-	public int deleteWorkerById(String id) {
+	public int deleteWorkerById(String username) {
 		WorkerMapper wm = this.sqlSession.getMapper(WorkerMapper.class);
-		return wm.deleteWorkerById(id);
+		return wm.deleteWorkerByUsername(username);
 	}
 
 }

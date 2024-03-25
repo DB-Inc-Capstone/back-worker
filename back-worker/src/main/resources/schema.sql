@@ -1,9 +1,8 @@
 CREATE TABLE IF NOT EXISTS worker (
-  "worker_pk" SERIAL PRIMARY KEY,
-  "id" VARCHAR(50) NOT NULL,
-  "pw" VARCHAR(50) NOT NULL,
-  "name" VARCHAR(30) NOT NULL,
+  "id" SERIAL PRIMARY KEY,
+  "username" VARCHAR(50) NOT NULL,
+  "password" VARCHAR(50) NOT NULL,
+  "nickname" VARCHAR(30) NOT NULL,
   "phone_number" VARCHAR(15) NOT NULL,
-  "email" VARCHAR(30) NOT NULL,
-  "acc_status" BOOLEAN NULL DEFAULT TRUE
+  "email" VARCHAR(30) NOT NULL
 );

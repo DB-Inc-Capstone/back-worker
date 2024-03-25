@@ -3,6 +3,10 @@ spring:
     init:
       platform: postgresql
       mode: always
+      schema-locations:
+      - classpath:schema.sql
+      data-locations:
+      - classpath:data.sql
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/back_worker
@@ -14,4 +18,3 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
-    
