@@ -1,0 +1,20 @@
+spring:
+  sql:
+    init:
+      platform: postgresql
+      mode: always
+      schema-locations:
+      - classpath:schema.sql
+      data-locations:
+      - classpath:data.sql
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/back_worker
+    username: postgres
+    password: root
+    
+mybatis:
+  type-aliases-package: kr.co.dbinc.model
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
