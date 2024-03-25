@@ -6,9 +6,9 @@ import kr.co.dbinc.model.WorkerVO;
 public interface WorkerService {
 	List<WorkerVO> selectWorkerList();
 	
-	List<WorkerVO> selectWorkerByName(String name);
+	List<WorkerVO> selectWorkerByNickname(String nickname);
 	
-	WorkerVO selectWorkerById(String id);
+	WorkerVO selectWorkerByUsername(String username);
 	
 	int insertWorker(WorkerVO workerVO);
 	
