@@ -1,9 +1,7 @@
 FROM openjdk:8-alpine
 
-WORKDIR /workspace
+ARG JAR_FILE=build/libs/back-worker-0.0.1-SNAPSHOT.jar
 
-ARG JAR_PATH=./build/libs
+COPY ${JAR_FILE} app.jar
 
-COPY ${JAR_PATH}/back-worker-0.0.1-SNAPSHOT.jar ${JAR_PATH}/back-worker-0.0.1-SNAPSHOT.jar
-
-CMD ["java", "-jar", "./build/libs/back-worker-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-jar","/app.jar"]
