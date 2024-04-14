@@ -1,4 +1,11 @@
+server:
+  port:
+    8081
+
 spring:
+  application:
+    name:
+      back-worker
   sql:
     init:
       platform: postgresql
@@ -9,7 +16,7 @@ spring:
       - classpath:data.sql
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/back_worker
+    url: jdbc:postgresql://localhost:5432/back_worker # 데이터베이스 링크 설정
     username: postgres
     password: root
     
@@ -18,3 +25,13 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    register-with-eureka: false # default : true
+    fetch-registry: false # default : true
+    service-url:
+      defaultZone: http://localhost:8761/eureka # 서버에 따라 다르게 설정
+    
