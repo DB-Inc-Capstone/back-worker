@@ -30,8 +30,6 @@ eureka:
   instance:
     prefer-ip-address: true
   client:
-    register-with-eureka: false # default : true
-    fetch-registry: false # default : true
     service-url:
       defaultZone: http://localhost:8761/eureka # 서버에 따라 다르게 설정
     
