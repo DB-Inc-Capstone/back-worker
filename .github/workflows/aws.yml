@@ -50,7 +50,7 @@ jobs:
 
     # 도커 이미지 업로드
     - name: Push the Docker image
-      run: docker push ${{ env.DOCKER_IMAGE_NAME }}:latest
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}
 
 
   deploy-to-ec2:
