@@ -66,8 +66,12 @@ jobs:
         username: ${{ env.EC2_SSH_USER }}
         key: ${{ env.EC2_SSH_PRIVATE_KEY }}
         script: |
-          sudo docker stop ${{ env.DOCKER_IMAGE_NAME }}
-          sudo docker rm ${{ env.DOCKER_IMAGE_NAME }}
+          CONTAINER_ID=$(sudo docker ps -q --filter "publish=9001")
 
-          sudo docker pull ${{ env.DOCKER_IMAGE_NAME }}
-          sudo docker run --name ${{ env.DOCKER_IMAGE_NAME }} -d -p 9001:9001 -e TZ=Asia/Seoul ${{ env.DOCKER_IMAGE_NAME }}
+          if [ ! -z "$CONTAINER_ID" ]; then
+            sudo docker stop $CONTAINER_ID
+            sudo docker rm $CONTAINER_ID
+          fi
+
+          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}
+          sudo docker run --name ${{ env.DOCKER_IMAGE_NAME }} -d -p 9001:9001 ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}
