@@ -18,6 +18,9 @@ public interface WorkerService {
 	List<WorkerDTO> selectWorkerList();
 	
 	
+	boolean loginWorker(WorkerDTO workerDTO);
+	
+	
 	int insertWorker(WorkerDTO workerDTO);
 	
 	int updateWorker(WorkerDTO workerDTO);

@@ -6,8 +6,12 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -16,17 +20,27 @@ import kr.co.dbinc.api.WorkerService;
 import kr.co.dbinc.dto.WorkerDTO;
 import kr.co.dbinc.mapper.WorkerMapper;
 import kr.co.dbinc.model.WorkerVO;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
 public class WorkerServiceImpl implements WorkerService {
 
 	private final SqlSession sqlSession;
 	private final WorkerMapper workerMapper;
+	private final PasswordEncoder passwordEncoder;
+	
 	
 	public WorkerServiceImpl(SqlSession ss) {
 		this.sqlSession = ss;
 		workerMapper = this.sqlSession.getMapper(WorkerMapper.class);
+		passwordEncoder = getPasswordEncoder();
 	}
+	
+	public PasswordEncoder getPasswordEncoder() {
+		return new BCryptPasswordEncoder(12);
+	}
+	
 	
 	@Override
 	public List<WorkerDTO> selectWorkerByUsername(String username, String sort) {
@@ -147,13 +161,39 @@ public class WorkerServiceImpl implements WorkerService {
 		return workerDTOs; 
 	}
 	
+	
+	@Override
+	public boolean loginWorker(WorkerDTO workerDTO) {
+		
+		// 형식 맞지 않는다면 실패
+		if(ObjectUtils.isEmpty(workerDTO.getUsername()) || ObjectUtils.isEmpty(workerDTO.getPassword())) {
+			return false;
+		}
+		
+		List<WorkerVO> workerVOs = workerMapper.selectWorkerByUsername(workerDTO.getUsername());
+		
+		// 일치하는 아이디가 없어서 실패
+		if(workerVOs.size() == 0) return false;
+		
+		// 검색된 아이디 가져오기
+		WorkerVO searchedWorker = workerVOs.get(0);
 
+		// 비밀번호 확인하기
+		if(passwordEncoder.matches(workerDTO.getPassword(), searchedWorker.getPassword())) {
+			return true;
+		} else {
+			return false;			
+		}
+	}
+	
+	
+	
 	@Transactional
 	@Override
 	public int insertWorker(WorkerDTO workerDTO) {
 		
 		WorkerVO workerVO = WorkerVO.builder().username(workerDTO.getUsername())
-					.password(workerDTO.getPassword())
+					.password(passwordEncoder.encode(workerDTO.getPassword()))
 					.nickname(workerDTO.getNickname())
 					.phone_number(workerDTO.getPhoneNumber())
 					.email(workerDTO.getEmail())

@@ -70,6 +70,7 @@ public class WorkerController {
 		}
 	}
 	
+	
 	/**
 	 * @param keyword
 	 * @param col
@@ -117,6 +118,29 @@ public class WorkerController {
 
 		} else {
 			responseDTO.message = "검색 옵션(col)이 유효하지 않습니다.";
+			return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
+		}
+		
+	}
+	
+	
+	/**
+	 * 로그인 함수입니다.
+	 * 단순히, 아이디, 비밀번호를 바탕으로 확인합니다.
+	 * @param workerDTO
+	 * @return
+	 */
+	@PostMapping("/login")
+	public ResponseEntity<ResponseDTO> workerLogin(@RequestBody(required=true) WorkerDTO workerDTO) {
+		
+		ResponseDTO responseDTO = new ResponseDTO();
+		boolean result = workerService.loginWorker(workerDTO);
+		
+		if(result == true) {
+			responseDTO.message = "로그인에 성공하였습니다.";
+			return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+		} else {
+			responseDTO.message = "로그인에 실패하였습니다.";
 			return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
 		}
 		
