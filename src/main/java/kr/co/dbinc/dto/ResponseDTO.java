@@ -1,4 +1,4 @@
-package kr.co.dbinc.model;
+package kr.co.dbinc.dto;
 
 import java.util.List;
 
@@ -13,5 +13,5 @@ import lombok.experimental.SuperBuilder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseDTO {
 	public String message;
-	public List<WorkerDTO> workerList;
+	public List<WorkerDTO> workers;
 }

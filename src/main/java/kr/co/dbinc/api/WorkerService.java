@@ -1,18 +1,28 @@
 package kr.co.dbinc.api;
 
 import java.util.List;
+
+import kr.co.dbinc.dto.WorkerDTO;
 import kr.co.dbinc.model.WorkerVO;
 
 public interface WorkerService {
-	List<WorkerVO> selectWorkerList();
 	
-	List<WorkerVO> selectWorkerByNickname(String nickname);
+	List<WorkerDTO> selectWorkerByUsername(String username, String sort);
 	
-	WorkerVO selectWorkerByUsername(String username);
+	List<WorkerDTO> selectWorkerByUsername(String username);
 	
-	int insertWorker(WorkerVO workerVO);
+	List<WorkerDTO> selectWorkerByNickname(String nickname, String sort);
 	
-	int updateWorker(WorkerVO workerVO);
+	List<WorkerDTO> selectWorkerByNickname(String nickname);
 	
-	int deleteWorkerById(String id);
+	List<WorkerDTO> selectWorkerList();
+	
+	
+	int insertWorker(WorkerDTO workerDTO);
+	
+	int updateWorker(WorkerDTO workerDTO);
+	
+	int deleteWorkerById(Long id);
+	
+	int deleteWorkerByUsername(String username);
 }
