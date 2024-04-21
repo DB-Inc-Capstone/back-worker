@@ -50,6 +50,7 @@ jobs:
 
     # 아마존 EC2 로 배포 (임시용 / 이후 쿠버네티스 적용 예정)
     - name: Deploy to EC2
+      if: success()
       uses: appleboy/ssh-action@master
       with:
         host: ${{ env.EC2_HOST }}
@@ -61,4 +62,4 @@ jobs:
           git pull origin main
           sudo docker-compose down
           sudo docker-compose pull
-          sudo docker-compose up
+          sudo docker-compose up -d
