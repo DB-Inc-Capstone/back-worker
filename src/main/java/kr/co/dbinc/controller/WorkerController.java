@@ -173,6 +173,48 @@ public class WorkerController {
 	}
 
 	
+	/**
+	 * 아이디와 휴대폰 전화번호 정보를 바탕으로 계정 확인
+	 * @param workerDTO
+	 * @return
+	 */
+	@PostMapping("/valid")
+	public ResponseEntity<ResponseDTO> validWorkerId(@RequestBody(required=true) WorkerDTO workerDTO) {
+		ResponseDTO responseDTO = new ResponseDTO();
+		
+		// 휴대폰 인증 정보가 없을 시 (SMS 인증 대체)
+		if(ObjectUtils.isEmpty(workerDTO.getUsername()) || ObjectUtils.isEmpty(workerDTO.getPhoneNumber())) {
+			responseDTO.message = "계정 아이디 및 휴대폰 인증 정보가 필요합니다.";
+			return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
+		}
+		
+		List<WorkerDTO> workerDTOs = workerService.selectWorkerByUsername(workerDTO.getUsername());
+		
+		// 일치하는 계정 찾기
+		boolean isExist = false;
+		
+		for(WorkerDTO workerDTO_ : workerDTOs) {
+			if(workerDTO_.getPhoneNumber().equals(workerDTO.getPhoneNumber())) {
+				isExist = true;
+			}
+		}
+		
+		// 결과에 따른 반환 진행
+		if(isExist) {
+			responseDTO.message = "일치하는 계정이 있습니다.";
+			return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+		} else {
+			responseDTO.message = "일치하는 계정이 없습니다.";
+			return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
+		}
+		
+	}
+	
+	
+	@PostMapping("/resetpw")
+	public ResponseEntity<ResponseDTO> resetWorkerPw(@RequestBody(required=true) WorkerDTO workerDTO) {
+		return null;
+	}
 	
 	
 	/**
