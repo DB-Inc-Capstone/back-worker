@@ -19,6 +19,8 @@ public interface WorkerMapper {
 	
 	int updateWorker(WorkerVO workerVO);
 	
+	int updatePasswordOfWorker(WorkerVO workerVO);
+	
 	int deleteWorkerByUsername(String username);
 	
 	int deleteWorkerById(Long id);

@@ -182,7 +182,7 @@ public class WorkerController {
 	public ResponseEntity<ResponseDTO> validWorkerId(@RequestBody(required=true) WorkerDTO workerDTO) {
 		ResponseDTO responseDTO = new ResponseDTO();
 		
-		// 휴대폰 인증 정보가 없을 시 (SMS 인증 대체)
+		// 계정 아이디 및 휴대폰 인증 정보가 없을 시 (SMS 인증 대체)
 		if(ObjectUtils.isEmpty(workerDTO.getUsername()) || ObjectUtils.isEmpty(workerDTO.getPhoneNumber())) {
 			responseDTO.message = "계정 아이디 및 휴대폰 인증 정보가 필요합니다.";
 			return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
@@ -210,10 +210,52 @@ public class WorkerController {
 		
 	}
 	
-	
+	/**
+	 * 아이디와 휴대폰 인증정보를 바탕으로 계정 비밀번호 초기화 진행
+	 * @param workerDTO
+	 * @return
+	 */
 	@PostMapping("/resetpw")
 	public ResponseEntity<ResponseDTO> resetWorkerPw(@RequestBody(required=true) WorkerDTO workerDTO) {
-		return null;
+		ResponseDTO responseDTO = new ResponseDTO();
+		
+		// 계정 아이디 및 휴대폰 인증 정보, 새로운 비밀번호 정보가 없을 시 (SMS 인증 대체)
+		if(ObjectUtils.isEmpty(workerDTO.getUsername()) 
+		|| ObjectUtils.isEmpty(workerDTO.getPhoneNumber())
+		|| ObjectUtils.isEmpty(workerDTO.getPassword())) {
+			responseDTO.message = "계정 아이디 및 휴대폰 인증 정보와 새로운 비밀번호가 필요합니다.";
+			return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
+		}
+		
+		List<WorkerDTO> workerDTOs = workerService.selectWorkerByUsername(workerDTO.getUsername());
+		
+		// 검색된 계정이 없다면
+		if(workerDTOs.size() == 0) {
+			responseDTO.message = "일치하는 계정이 없습니다.";
+			return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
+		}
+		
+		// 아이디 및 휴대폰 번호 비교하기
+		WorkerDTO selectedWorkerDTO = workerDTOs.get(0);
+		
+		if(!workerDTO.getUsername().equals(selectedWorkerDTO.getUsername())
+		|| !workerDTO.getPhoneNumber().equals(selectedWorkerDTO.getPhoneNumber())) {
+			responseDTO.message = "일치하는 계정이 없습니다.";
+			return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
+		}
+		
+		// 비밀번호 변경 진행
+		selectedWorkerDTO.setPassword(workerDTO.getPassword());
+		int result = workerService.updatePasswordOfWorker(selectedWorkerDTO);
+		
+		// 결과 반환
+		if(result > 0) {
+			responseDTO.message = "비밀번호 재발급에 성공하였습니다.";
+			return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+		} else {
+			responseDTO.message = "비밀번호 재발급에 실패하였습니다.";
+			return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	

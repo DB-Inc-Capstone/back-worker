@@ -236,6 +236,16 @@ public class WorkerServiceImpl implements WorkerService {
 		
 		return workerMapper.updateWorker(workerVO);
 	}
+	
+	@Transactional
+	@Override
+	public int updatePasswordOfWorker(WorkerDTO workerDTO) {
+		WorkerVO workerVO = WorkerVO.builder().username(workerDTO.getUsername())
+				.password(passwordEncoder.encode(workerDTO.getPassword()))
+				.build();
+		
+		return workerMapper.updatePasswordOfWorker(workerVO);
+	}
 
 	@Transactional
 	@Override

@@ -25,7 +25,11 @@ public interface WorkerService {
 	
 	int insertWorker(WorkerDTO workerDTO);
 	
+	
 	int updateWorker(WorkerDTO workerDTO);
+	
+	int updatePasswordOfWorker(WorkerDTO workerDTO);
+	
 	
 	int deleteWorkerById(Long id);
 	

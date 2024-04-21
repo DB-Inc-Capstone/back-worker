@@ -38,6 +38,12 @@
 		WHERE username = #{username};
 	</update>
 	
+	<update id="updatePasswordOfWorker" parameterType="kr.co.dbinc.model.WorkerVO">
+		UPDATE worker
+		SET password = #{password}
+		WHERE username = #{username};
+	</update>
+	
 	<delete id="deleteWorkerByUsername">
 		DELETE
 		FROM worker
