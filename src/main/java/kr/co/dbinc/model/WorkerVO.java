@@ -1,13 +1,17 @@
 package kr.co.dbinc.model;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Value;
+import lombok.experimental.SuperBuilder;
 
-@Data
+@Value
+@AllArgsConstructor
+@SuperBuilder
 public class WorkerVO {
-	private Integer id;
+	private Long id;
 	private String username;
 	private String password;
 	private String nickname;
-	private String phoneNumber;
+	private String phone_number;
 	private String email;
 }
