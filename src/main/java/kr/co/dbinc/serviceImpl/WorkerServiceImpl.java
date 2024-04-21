@@ -141,6 +141,27 @@ public class WorkerServiceImpl implements WorkerService {
 	
 	@Transactional(readOnly = true)
 	@Override
+	public List<WorkerDTO> selectWorkerByPhoneNumber(String phoneNumber) {
+		
+		List<WorkerVO> workerVOs = workerMapper.selectWorkerByPhoneNumber(phoneNumber);
+		List<WorkerDTO> workerDTOs = new ArrayList<WorkerDTO>();
+		
+		// pk 와 username 만 알려줌
+		for(WorkerVO workerVO : workerVOs) {
+			WorkerDTO workerDTO = WorkerDTO.builder()
+					.id(workerVO.getId())
+					.username(workerVO.getUsername())
+					.build();
+			
+			workerDTOs.add(workerDTO);
+		}
+		
+		return workerDTOs; 
+	}
+	
+	
+	@Transactional(readOnly = true)
+	@Override
 	public List<WorkerDTO> selectWorkerList() {
 		
 		List<WorkerVO> workerVOs = workerMapper.selectWorkerList();

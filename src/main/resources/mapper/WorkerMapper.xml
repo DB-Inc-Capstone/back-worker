@@ -19,6 +19,12 @@
 		WHERE username = #{username};
 	</select>
 	
+	<select id="selectWorkerByPhoneNumber" resultType="kr.co.dbinc.model.WorkerVO">
+		SELECT id, username, password, nickname, phone_number, email
+		FROM worker
+		WHERE phone_number = #{phoneNumber};
+	</select>
+	
 	<insert id="insertWorker" parameterType="kr.co.dbinc.model.WorkerVO">
 		INSERT INTO worker(username, password, nickname, phone_number, email)
 		values (#{username}, #{password}, #{nickname}, #{phone_number}, #{email});

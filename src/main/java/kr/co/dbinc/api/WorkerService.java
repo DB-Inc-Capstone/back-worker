@@ -15,6 +15,8 @@ public interface WorkerService {
 	
 	List<WorkerDTO> selectWorkerByNickname(String nickname);
 	
+	List<WorkerDTO> selectWorkerByPhoneNumber(String phoneNumber);
+	
 	List<WorkerDTO> selectWorkerList();
 	
 	

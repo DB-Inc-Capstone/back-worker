@@ -13,6 +13,8 @@ public interface WorkerMapper {
 	
 	List<WorkerVO> selectWorkerByNickname(String nickname);
 	
+	List<WorkerVO> selectWorkerByPhoneNumber(String phoneNumber);
+	
 	int insertWorker(WorkerVO workerVO);
 	
 	int updateWorker(WorkerVO workerVO);

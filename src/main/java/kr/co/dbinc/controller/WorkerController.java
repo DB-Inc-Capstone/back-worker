@@ -145,6 +145,32 @@ public class WorkerController {
 		}
 		
 	}
+	
+	
+	/**
+	 * 휴대폰 전화번호로 아이디 찾기 (인증 생략)
+	 * @param workerDTO
+	 * @return
+	 */
+	@PostMapping("/findid")
+	public ResponseEntity<ResponseDTO> findWorkerId(@RequestBody(required=true) WorkerDTO workerDTO) {
+		
+		ResponseDTO responseDTO = new ResponseDTO();
+		
+		// 휴대폰 인증 정보가 없을 시 (SMS 인증 대체)
+		if(ObjectUtils.isEmpty(workerDTO.getPhoneNumber())) {
+			responseDTO.message = "휴대폰 인증 정보가 필요합니다.";
+			return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
+		}
+		
+		List<WorkerDTO> workerDTOs = workerService.selectWorkerByPhoneNumber(workerDTO.getPhoneNumber());
+		
+		responseDTO.message = "휴대폰 전화번호가 일치하는 계정의 리스트는 아래와 같습니다.";
+		responseDTO.workers = workerDTOs;
+		
+		return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+		
+	}
 
 	
 	
