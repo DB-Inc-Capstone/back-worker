@@ -23,6 +23,9 @@ jobs:
         username: ${{ env.EC2_SSH_USER }}
         key: ${{ env.EC2_SSH_PRIVATE_KEY }}
         script: |
+          git clone https://github.com/DB-Inc-Capstone/.github.git
+          cd .github
+          git pull origin main
           sudo docker-compose down
           sudo docker-compose pull
           sudo docker-compose up
