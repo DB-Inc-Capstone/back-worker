@@ -34,3 +34,10 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka # 서버에 따라 다르게 설정
+
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          cors: DEBUG

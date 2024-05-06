@@ -19,7 +19,6 @@ import kr.co.dbinc.api.WorkerService;
 import kr.co.dbinc.dto.ResponseDTO;
 import kr.co.dbinc.dto.WorkerDTO;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/worker")
 public class WorkerController {
