@@ -9,7 +9,7 @@ spring:
   sql:
     init:
       platform: postgresql
-      mode: never # always
+      mode: always #never # always
       schema-locations:
       - classpath:schema.sql
       data-locations:

@@ -1,1 +1,3 @@
+/*
 DELETE FROM worker;
+*/
