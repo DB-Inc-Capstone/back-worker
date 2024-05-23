@@ -19,6 +19,8 @@ spring:
     url: jdbc:postgresql://localhost:5432/back_worker # 데이터베이스 링크 설정
     username: postgres
     password: root
+  zipkin:
+    base-url: http://localhost:9412
     
 mybatis:
   type-aliases-package: kr.co.dbinc.model
