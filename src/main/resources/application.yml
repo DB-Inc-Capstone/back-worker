@@ -41,3 +41,6 @@ logging:
       springframework:
         web:
           cors: DEBUG
+  # 쿠버네티스에서의 공유 폴더 설정으로 elasticsearch 연결하는 방식으로 활용
+  #file:
+  #  path: /logs

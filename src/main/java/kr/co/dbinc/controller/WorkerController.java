@@ -4,10 +4,12 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +29,8 @@ public class WorkerController {
 	
 	private final WorkerService workerService;
 	
+	private final Logger logger = LogManager.getFormatterLogger(this.getClass());
+
 	public WorkerController(WorkerService ws) {
 		this.workerService = ws;
 	}
@@ -48,6 +52,9 @@ public class WorkerController {
 			responseDTO.message = "회원가입 형식을 맞춰 보내주세요.";
 			return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
 		}
+		
+		// log 진행
+		logger.info("createWorker 호출, username is " + workerDTO.getUsername());
 		
 		// 패스워드 정규성 검증
 		// todo
@@ -81,6 +88,9 @@ public class WorkerController {
 	public ResponseEntity<ResponseDTO> getWorker(@RequestBody(required=false) WorkerDTO workerDTO,
 													@Valid @RequestParam(value="col", required=false) String col, 
 													@Valid @RequestParam(value="sort", required=false) String sort) {
+		
+		logger.info("getWorker 호출");
+		
 		ResponseDTO responseDTO = new ResponseDTO();
 		
 		// 검색 옵션에 따른 객체 탐색
@@ -140,6 +150,8 @@ public class WorkerController {
 	@GetMapping("/{workerId}")
 	public ResponseEntity<ResponseDTO> getWorkerById(@PathVariable Long workerId) {
 		
+		logger.info("getWorkerById 호출, workerId = " + workerId.toString());
+		
 		ResponseDTO responseDTO = new ResponseDTO();
 		
 		WorkerDTO workerDTO = workerService.selectWorkerById(workerId);
@@ -169,6 +181,8 @@ public class WorkerController {
 	@GetMapping("/{workerId}/detailed")
 	public ResponseEntity<ResponseDTO> getWorkerByIdDetailed(@PathVariable Long workerId) {
 		
+		logger.info("getWorkerByIdDetailed 호출, workerId = " + workerId.toString());
+		
 		ResponseDTO responseDTO = new ResponseDTO();
 		
 		WorkerDTO workerDTO = workerService.selectWorkerById(workerId);
@@ -194,6 +208,8 @@ public class WorkerController {
 	@PostMapping("/login")
 	public ResponseEntity<ResponseDTO> workerLogin(@RequestBody(required=true) WorkerDTO workerDTO) {
 		
+		logger.info("workerLogin 호출");
+		
 		ResponseDTO responseDTO = new ResponseDTO();
 		boolean result = workerService.loginWorker(workerDTO);
 		
@@ -214,6 +230,8 @@ public class WorkerController {
 	 */
 	@DeleteMapping("/{workerId}")
 	public ResponseEntity<ResponseDTO> deleteWorkerById(@PathVariable Long workerId) {
+		
+		logger.info("deleteWorkerById 호출, workerId = " + workerId.toString());
 		
 		ResponseDTO responseDTO = new ResponseDTO();
 		
@@ -240,6 +258,8 @@ public class WorkerController {
 	@PostMapping("/findid")
 	public ResponseEntity<ResponseDTO> findWorkerByPhoneNumber(@RequestBody(required=true) WorkerDTO workerDTO) {
 		
+		logger.info("findWorkerByPhoneNumber 호출");
+		
 		ResponseDTO responseDTO = new ResponseDTO();
 		
 		// 휴대폰 인증 정보가 없을 시 (SMS 인증 대체)
@@ -265,6 +285,9 @@ public class WorkerController {
 	 */
 	@PostMapping("/valid")
 	public ResponseEntity<ResponseDTO> validWorkerByUsernameAndPhoneNumber(@RequestBody(required=true) WorkerDTO workerDTO) {
+		
+		logger.info("validWorkerByUsernameAndPhoneNumber 호출");
+		
 		ResponseDTO responseDTO = new ResponseDTO();
 		
 		// 계정 아이디 및 휴대폰 인증 정보가 없을 시 (SMS 인증 대체)
@@ -302,6 +325,9 @@ public class WorkerController {
 	 */
 	@PostMapping("/resetpw")
 	public ResponseEntity<ResponseDTO> resetWorkerPw(@RequestBody(required=true) WorkerDTO workerDTO) {
+		
+		logger.info("resetWorkerPw 호출");
+		
 		ResponseDTO responseDTO = new ResponseDTO();
 		
 		// 계정 아이디 및 휴대폰 인증 정보, 새로운 비밀번호 정보가 없을 시 (SMS 인증 대체)
