@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,7 +71,6 @@ public class WorkerController {
 		}
 	}
 	
-	
 	/**
 	 * @param keyword
 	 * @param col
@@ -77,8 +78,8 @@ public class WorkerController {
 	 * @return 검색 결과 반환
 	 */
 	@GetMapping
-	public ResponseEntity<ResponseDTO> searchWorker(@RequestBody(required=false) WorkerDTO workerDTO,
-													@Valid @RequestParam(value="col") String col, 
+	public ResponseEntity<ResponseDTO> getWorker(@RequestBody(required=false) WorkerDTO workerDTO,
+													@Valid @RequestParam(value="col", required=false) String col, 
 													@Valid @RequestParam(value="sort", required=false) String sort) {
 		ResponseDTO responseDTO = new ResponseDTO();
 		
@@ -95,7 +96,7 @@ public class WorkerController {
 			
 			List<WorkerDTO> workerDTOs = workerService.selectWorkerByUsername(username, sort);
 			
-			responseDTO.message = "성공적으로 불러왔습니다.";
+			responseDTO.message = "검색 옵션(username)을 바탕으로 성공적으로 불러왔습니다.";
 			responseDTO.workers = workerDTOs;
 			return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 			
@@ -111,12 +112,73 @@ public class WorkerController {
 			
 			List<WorkerDTO> workerDTOs = workerService.selectWorkerByNickname(nickname, sort);
 			
-			responseDTO.message = "성공적으로 불러왔습니다.";
+			responseDTO.message = "검색 옵션(nickname)을 바탕으로 성공적으로 불러왔습니다.";
 			responseDTO.workers = workerDTOs;
 			return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 
 		} else {
-			responseDTO.message = "검색 옵션(col)이 유효하지 않습니다.";
+			
+			List<WorkerDTO> workerList = workerService.selectWorkerList();
+			
+			if(workerList != null) {
+				responseDTO.setMessage("작업자 리스트는 아래와 같습니다.");
+				responseDTO.setWorkers(workerList);
+				return new ResponseEntity<>(responseDTO, HttpStatus.OK);			
+			} else {
+				responseDTO.setMessage("작업자 리스트를 불러오는 데에 실패했습니다.");
+				return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
+			}
+	
+		}
+	}
+	
+	/**
+	 * 주키로 회원 정보 조회하기
+	 * @param workerDTO
+	 * @return
+	 */
+	@GetMapping("/{workerId}")
+	public ResponseEntity<ResponseDTO> getWorkerById(@PathVariable Long workerId) {
+		
+		ResponseDTO responseDTO = new ResponseDTO();
+		
+		WorkerDTO workerDTO = workerService.selectWorkerById(workerId);
+		
+		if(workerDTO != null) {
+			responseDTO.message = "조회한 회원 정보는 다음과 같습니다.";
+			responseDTO.worker = workerDTO;
+			
+			responseDTO.worker.setEmail(null);
+			responseDTO.worker.setNickname(null);
+			responseDTO.worker.setPassword(null);
+			responseDTO.worker.setPhoneNumber(null);
+			
+			return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+		} else {
+			responseDTO.message = "회원 조회에 실패했습니다.";
+			return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
+		}
+		
+	}
+	
+	/**
+	 * 주키로 회원 정보 세부 조회하기
+	 * @param workerDTO
+	 * @return
+	 */
+	@GetMapping("/{workerId}/detailed")
+	public ResponseEntity<ResponseDTO> getWorkerByIdDetailed(@PathVariable Long workerId) {
+		
+		ResponseDTO responseDTO = new ResponseDTO();
+		
+		WorkerDTO workerDTO = workerService.selectWorkerById(workerId);
+		
+		if(workerDTO != null) {
+			responseDTO.message = "조회한 회원 정보는 다음과 같습니다.";
+			responseDTO.worker = workerDTO;
+			return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+		} else {
+			responseDTO.message = "회원 조회에 실패했습니다.";
 			return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
 		}
 		
@@ -145,6 +207,30 @@ public class WorkerController {
 		
 	}
 	
+	/**
+	 * 주키로 회원 삭제하기
+	 * @param workerDTO
+	 * @return
+	 */
+	@DeleteMapping("/{workerId}")
+	public ResponseEntity<ResponseDTO> deleteWorkerById(@PathVariable Long workerId) {
+		
+		ResponseDTO responseDTO = new ResponseDTO();
+		
+		int result = workerService.deleteWorkerById(workerId);
+		
+		if(result != 0) {
+			responseDTO.message = "회원 탈퇴에 성공하였습니다.";
+			
+			return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+		} else {
+			responseDTO.message = "회원 탈퇴에 실패하였습니다.";
+			
+			return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
+		}
+		
+	}
+	
 	
 	/**
 	 * 휴대폰 전화번호로 아이디 찾기 (인증 생략)
@@ -152,7 +238,7 @@ public class WorkerController {
 	 * @return
 	 */
 	@PostMapping("/findid")
-	public ResponseEntity<ResponseDTO> findWorkerId(@RequestBody(required=true) WorkerDTO workerDTO) {
+	public ResponseEntity<ResponseDTO> findWorkerByPhoneNumber(@RequestBody(required=true) WorkerDTO workerDTO) {
 		
 		ResponseDTO responseDTO = new ResponseDTO();
 		
@@ -178,7 +264,7 @@ public class WorkerController {
 	 * @return
 	 */
 	@PostMapping("/valid")
-	public ResponseEntity<ResponseDTO> validWorkerId(@RequestBody(required=true) WorkerDTO workerDTO) {
+	public ResponseEntity<ResponseDTO> validWorkerByUsernameAndPhoneNumber(@RequestBody(required=true) WorkerDTO workerDTO) {
 		ResponseDTO responseDTO = new ResponseDTO();
 		
 		// 계정 아이디 및 휴대폰 인증 정보가 없을 시 (SMS 인증 대체)
@@ -263,23 +349,15 @@ public class WorkerController {
 	 *
 	 */
 	
-	
-	/**
-	 * @return List<WorkerVO>
-	 */
-	@GetMapping("/selectWorkerTest")
-	public ResponseEntity<List<WorkerDTO>> selectWorkerTest() {
-		List<WorkerDTO> workerList = workerService.selectWorkerList();
-		return new ResponseEntity<>(workerList, HttpStatus.OK);
-	}
-	
 	/**
 	 * @param workerVO
 	 * @return 성공 여부 반환
 	 */
+	/*
 	@PostMapping("/insertWorkerTest")
 	public ResponseEntity<Integer> insertWorkerTest(@Valid @RequestBody WorkerDTO workerDTO) {
 		Integer result = workerService.insertWorker(workerDTO);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
+	*/
 }

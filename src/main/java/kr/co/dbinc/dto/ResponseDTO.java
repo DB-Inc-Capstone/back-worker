@@ -13,5 +13,6 @@ import lombok.experimental.SuperBuilder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseDTO {
 	public String message;
+	public WorkerDTO worker;
 	public List<WorkerDTO> workers;
 }

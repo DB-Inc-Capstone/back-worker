@@ -43,6 +43,27 @@ public class WorkerServiceImpl implements WorkerService {
 	
 	
 	@Override
+	public WorkerDTO selectWorkerById(Long workerId) {
+		// 여기서 ResponseDTO 를 생성하여 메세지까지 작성한 후 반환하는 것이 좋겠다. 
+		
+		try {
+			WorkerVO worker = workerMapper.selectWorkerById(workerId);
+			
+			return WorkerDTO.builder()
+							.id(worker.getId())
+							.username(worker.getUsername())
+							.nickname(worker.getNickname())
+							.email(worker.getEmail())
+							.phoneNumber(worker.getPhone_number())
+							.build();
+		} catch (Exception e) {
+			return null;
+		}
+		
+	}
+	
+	
+	@Override
 	public List<WorkerDTO> selectWorkerByUsername(String username, String sort) {
 		
 		List<WorkerDTO> workerList = this.selectWorkerByUsername(username);

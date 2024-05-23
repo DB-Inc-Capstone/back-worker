@@ -9,6 +9,8 @@ import kr.co.dbinc.model.WorkerVO;
 public interface WorkerMapper {
 	List<WorkerVO> selectWorkerList();
 	
+	WorkerVO selectWorkerById(Long workerId);
+	
 	List<WorkerVO> selectWorkerByUsername(String username);
 	
 	List<WorkerVO> selectWorkerByNickname(String nickname);

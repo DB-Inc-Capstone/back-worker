@@ -7,6 +7,8 @@ import kr.co.dbinc.model.WorkerVO;
 
 public interface WorkerService {
 	
+	WorkerDTO selectWorkerById(Long workerId);
+	
 	List<WorkerDTO> selectWorkerByUsername(String username, String sort);
 	
 	List<WorkerDTO> selectWorkerByUsername(String username);

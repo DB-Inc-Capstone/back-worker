@@ -7,6 +7,12 @@
 		FROM worker;
 	</select>
 	
+	<select id="selectWorkerById" resultType="kr.co.dbinc.model.WorkerVO">
+		SELECT id, username, password, nickname, phone_number, email
+		FROM worker
+		WHERE id = #{workerId};
+	</select>
+	
 	<select id="selectWorkerByNickname" resultType="kr.co.dbinc.model.WorkerVO">
 		SELECT id, username, password, nickname, phone_number, email
 		FROM worker
