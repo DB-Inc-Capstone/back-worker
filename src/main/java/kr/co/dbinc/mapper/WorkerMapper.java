@@ -26,4 +26,6 @@ public interface WorkerMapper {
 	int deleteWorkerByUsername(String username);
 	
 	int deleteWorkerById(Long id);
+	
+	int deleteAllWorker();
 }

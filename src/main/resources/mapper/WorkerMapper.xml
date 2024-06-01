@@ -53,13 +53,18 @@
 	<delete id="deleteWorkerByUsername">
 		DELETE
 		FROM worker
-		WHERE username = #{username}
+		WHERE username = #{username};
 	</delete>
 	
 	<delete id="deleteWorkerById">
 		DELETE
 		FROM worker
-		WHERE id = #{id}
+		WHERE id = #{id};
+	</delete>
+	
+	<delete id="deleteAllWorker">
+		DELETE
+		FROM worker;
 	</delete>
 
 </mapper>
