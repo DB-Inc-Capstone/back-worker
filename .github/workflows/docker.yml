@@ -63,5 +63,5 @@ jobs:
           git clone https://github.com/DB-Inc-Capstone/.github.git
           cd .github
           git pull origin main
-                    sudo docker pull ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}
-          sudo docker-compose up -d --no-deps --build ${{ env.DOCKER_IMAGE_NAME }}-1 ${{ env.DOCKER_IMAGE_NAME }}-2
+          sudo docker pull ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}
+          sudo docker stack deploy -c docker-swarm.yml cloudb
