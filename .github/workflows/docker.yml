@@ -64,4 +64,5 @@ jobs:
           cd .github
           git pull origin main
           sudo docker pull ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}
-          sudo docker stack deploy -c docker-swarm.yml cloudb
+          #sudo docker stack deploy -c docker-swarm.yml cloudb
+          sudo docker-compose up -d --no-deps --build ${{ env.DOCKER_IMAGE_NAME }}
