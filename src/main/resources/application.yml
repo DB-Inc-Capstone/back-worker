@@ -37,6 +37,12 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka # 서버에 따라 다르게 설정
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
 logging:
   level:
     org:
